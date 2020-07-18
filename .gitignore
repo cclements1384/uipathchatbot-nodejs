@@ -1,6 +1,7 @@
 # directories
 node_modules/
 lib/
+.vscode/
 
 # files
 .env
