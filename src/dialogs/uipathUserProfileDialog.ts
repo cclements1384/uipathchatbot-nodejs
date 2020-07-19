@@ -143,11 +143,11 @@ export class UiPathUserProfileDialog extends ComponentDialog {
             uipathUserProfile.licenseType = stepContext.options.licenseType;
 
             /* compose a message to send to the user */
-            const message = `Ok, I have the following user details: 
-            FirstName: ${stepContext.options.firstName} 
-            LastName: ${stepContext.options.lastName}  
-            Username: ${stepContext.options.userName}
-            E-mail Address: ${stepContext.options.emailAddress}
+            const message = `Ok, I have the following user details:\n 
+            FirstName: ${stepContext.options.firstName}\n
+            LastName: ${stepContext.options.lastName}\n
+            Username: ${stepContext.options.userName}\n
+            E-mail Address: ${stepContext.options.emailAddress}\n
             License Type: ${stepContext.options.licenseType}`;
 
             /* prompt the user to confirm the information */

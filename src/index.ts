@@ -13,6 +13,7 @@ import { BotFrameworkAdapter, ConversationState, MemoryStorage, UserState } from
 import { DialogBot } from './bots/dialogBot';
 //import { UserProfileDialog } from './dialogs/userProfileDialog';
 import { UiPathUserProfileDialog } from './dialogs/uipathUserProfileDialog';
+import { MainDialog } from './dialogs/mainDialog';
 
 // Read environment variables from .env file
 const ENV_FILE = path.join(__dirname, '.env');
@@ -57,6 +58,7 @@ const conversationState = new ConversationState(memoryStorage);
 const userState = new UserState(memoryStorage);
 
 // Create the main dialog.
+const uipathUserProfileDialog = new UiPathUserProfileDialog(userState);
 const dialog = new UiPathUserProfileDialog(userState);
 const bot = new DialogBot(conversationState, userState, dialog);
 

@@ -5,6 +5,7 @@ import { ActivityHandler, BotState, ConversationState, StatePropertyAccessor, Us
 import { Dialog, DialogState } from 'botbuilder-dialogs';
 //import { UserProfileDialog } from '../dialogs/userProfileDialog';
 import { UiPathUserProfileDialog } from '../dialogs/uipathUserProfileDialog'; 
+import { MainDialog } from '../dialogs/mainDialog';
 export class DialogBot extends ActivityHandler {
     private conversationState: BotState;
     private userState: BotState;
@@ -31,7 +32,7 @@ export class DialogBot extends ActivityHandler {
             console.log('Running dialog with Message Activity.');
 
             // Run the Dialog with the new message Activity.
-            await (this.dialog as UiPathUserProfileDialog).run(context, this.dialogState);
+            await (this.dialog as MainDialog).run(context, this.dialogState);
 
             await next();
         });
