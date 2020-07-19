@@ -60,6 +60,9 @@ const userState = new UserState(memoryStorage);
 // Create the main dialog.
 const uipathUserProfileDialog = new UiPathUserProfileDialog(userState);
 const dialog = new UiPathUserProfileDialog(userState);
+//const uiPathDialog = new UiPathUserProfileDialog(userState);
+
+//const dialog = new MainDialog(userState,uiPathDialog);
 const bot = new DialogBot(conversationState, userState, dialog);
 
 // Create HTTP server.

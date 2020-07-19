@@ -20,6 +20,7 @@ const EMAILADDRESS_PROMPT = "EMAILADDRESS_PROMPT";
 const LICENSE_PROMPT = "LICENSE_PROMPT;"
 const WATERFALL_DIALOG = "WATERFALL_DIALOG";
 const CONFIRM_PROMPT = "CONFIRM_PROMPT";
+const FINAL_STEP = "FINALSTEP_PROMPT"
 
 export class UiPathUserProfileDialog extends ComponentDialog {
     
@@ -38,6 +39,7 @@ export class UiPathUserProfileDialog extends ComponentDialog {
         this.addDialog(new TextPrompt(EMAILADDRESS_PROMPT));
         this.addDialog(new ChoicePrompt(LICENSE_PROMPT));
         this.addDialog(new ConfirmPrompt(CONFIRM_PROMPT));
+        //this.addDialog(new TextPrompt(FINAL_STEP));
 
         /* create the waterfall dialog */
         this.addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
@@ -46,7 +48,8 @@ export class UiPathUserProfileDialog extends ComponentDialog {
             this.userNameStep.bind(this),
             this.emailAddressStep.bind(this),
             this.licenseTypeStep.bind(this),
-            this.summaryStep.bind(this)
+            this.summaryStep.bind(this),
+            this.confirmStep.bind(this)
         ]));
         
         /* init the dialog */
@@ -152,10 +155,19 @@ export class UiPathUserProfileDialog extends ComponentDialog {
 
             /* prompt the user to confirm the information */
             await stepContext.context.sendActivity(message);
-            await stepContext.prompt(CONFIRM_PROMPT, { prompt: 'Do you want me to create this user?'})
+            return await stepContext.prompt(CONFIRM_PROMPT, { prompt: 'Do you want me to create this user?'})
         }
 
-        /* end the dialog */
-        return await stepContext.endDialog();
+       
+    }
+
+    private async confirmStep(stepContext: WaterfallStepContext){
+
+        if(stepContext.result){
+            return await stepContext.endDialog();
+        }
+        else
+            return await stepContext.continueDialog();
+
     }
 }

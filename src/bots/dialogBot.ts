@@ -32,7 +32,7 @@ export class DialogBot extends ActivityHandler {
             console.log('Running dialog with Message Activity.');
 
             // Run the Dialog with the new message Activity.
-            await (this.dialog as MainDialog).run(context, this.dialogState);
+            await (this.dialog as UiPathUserProfileDialog).run(context, this.dialogState);
 
             await next();
         });
@@ -41,6 +41,22 @@ export class DialogBot extends ActivityHandler {
             // Save any state changes. The load happened during the execution of the Dialog.
             await this.conversationState.saveChanges(context, false);
             await this.userState.saveChanges(context, false);
+            await next();
+        });
+
+        /* this fires when new users are added to the coversation. */
+        this.onMembersAdded(async (context, next) =>{
+
+            /* loop across all members in the conversation */
+            for(const index in context.activity.membersAdded){
+                /* if the user is not a bot send them a message */
+                if(context.activity.membersAdded[index].id === context.activity.recipient.id){
+                    await context.sendActivity("Hi, I am ROC-E your UiPath virtual assistant.");
+                    await context.sendActivity(`I can help you enroll new users into the Citizen Automation program. Start by typing "enroll".`);
+                }
+
+            }
+            /* ensure the next bot handler is called */
             await next();
         });
     }

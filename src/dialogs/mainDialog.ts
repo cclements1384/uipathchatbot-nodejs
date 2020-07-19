@@ -19,14 +19,18 @@ export class MainDialog extends ComponentDialog {
         super('mainDialog');
 
         /* add the dialog steps */
-        this.addDialog(new TextPrompt(WELCOME_PROMPT))
-            .addDialog(uiPathUserProfileDialog)
-            .addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
+        this.addDialog(new TextPrompt(WELCOME_PROMPT));
+        this.addDialog(uiPathUserProfileDialog);
+
+        /* add the steps */
+        this.addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
                 this.introStep.bind(this),
                 this.actStep.bind(this),
                 this.finalStep.bind(this)
         ]));
 
+        /* initalize the dialog */
+        this.initialDialogId = WATERFALL_DIALOG;
     }
 
     /* the run method, called by the dialog bot */
@@ -36,6 +40,7 @@ export class MainDialog extends ComponentDialog {
         const dialogSet = new DialogSet(accessor);
         /* add this dialog to the set */
         dialogSet.add(this);
+        
 
         /* create the dialog Context */
         const dialogContext = await dialogSet.createContext(context);
@@ -50,7 +55,7 @@ export class MainDialog extends ComponentDialog {
     }
 
     /* welcome the user to the bot */
-    private async introStep(stepContext: WaterfallStepContext) : Promise<DialogTurnResult> {
+    private async introStep(stepContext: WaterfallStepContext) {
 
         /* compose a message to the user */
         const welcomeMessage = (stepContext.options as any).restartMsg ? (stepContext.options as any).restartMsg : `What can I help you with today?\n  You can say something like "Create a new user".`;
@@ -61,7 +66,7 @@ export class MainDialog extends ComponentDialog {
     }
 
     /* dispatch the user to the user create dialog */
-    private async actStep(stepContext: WaterfallStepContext){
+    private async actStep(stepContext: WaterfallStepContext) {
 
         /* did we get a response in the previous set? */
         if(stepContext.result){
