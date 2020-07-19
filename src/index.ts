@@ -11,7 +11,8 @@ import { BotFrameworkAdapter, ConversationState, MemoryStorage, UserState } from
 
 // This bot's main dialog.
 import { DialogBot } from './bots/dialogBot';
-import { UserProfileDialog } from './dialogs/userProfileDialog';
+//import { UserProfileDialog } from './dialogs/userProfileDialog';
+import { UiPathUserProfileDialog } from './dialogs/uipathUserProfileDialog';
 
 // Read environment variables from .env file
 const ENV_FILE = path.join(__dirname, '.env');
@@ -56,7 +57,7 @@ const conversationState = new ConversationState(memoryStorage);
 const userState = new UserState(memoryStorage);
 
 // Create the main dialog.
-const dialog = new UserProfileDialog(userState);
+const dialog = new UiPathUserProfileDialog(userState);
 const bot = new DialogBot(conversationState, userState, dialog);
 
 // Create HTTP server.

@@ -46,7 +46,7 @@ export class UiPathUserProfileDialog extends ComponentDialog {
             this.userNameStep.bind(this),
             this.emailAddressStep.bind(this),
             this.licenseTypeStep.bind(this),
-            
+            this.summaryStep.bind(this)
         ]));
         
         /* init the dialog */
@@ -123,13 +123,39 @@ export class UiPathUserProfileDialog extends ComponentDialog {
         });
     }
 
-    private async confirmStep(stepContext: WaterfallStepContext<UiPathUserProfile>){
+    private async summaryStep(stepContext: WaterfallStepContext<UiPathUserProfile>){
 
-        /* assign the license type collected in the previous step */
-        stepContext.options.licenseType = stepContext.result.value;
+        /* if we received a result from the previous step */
+        if(stepContext.result){
 
-        /* prompt the user to confirm the information */
-        
+            /* assign the license type collected in the previous step */
+            stepContext.options.licenseType = stepContext.result.value;
 
+            /* get the user profile */
+            const uipathUserProfile = await this.uipathUserProfile.get(stepContext.context, new UiPathUserProfile());
+            const stepContextOptions = stepContext.options;
+
+            /* hydrate the userprofile from the stepContext.options. */
+            uipathUserProfile.firstName = stepContextOptions.firstName;
+            uipathUserProfile.lastName = stepContextOptions.lastName;
+            uipathUserProfile.userName = stepContextOptions.userName;
+            uipathUserProfile.emailAddress = stepContextOptions.emailAddress;
+            uipathUserProfile.licenseType = stepContext.options.licenseType;
+
+            /* compose a message to send to the user */
+            const message = `Ok, I have the following user details: 
+            FirstName: ${stepContext.options.firstName} 
+            LastName: ${stepContext.options.lastName}  
+            Username: ${stepContext.options.userName}
+            E-mail Address: ${stepContext.options.emailAddress}
+            License Type: ${stepContext.options.licenseType}`;
+
+            /* prompt the user to confirm the information */
+            await stepContext.context.sendActivity(message);
+            await stepContext.prompt(CONFIRM_PROMPT, { prompt: 'Do you want me to create this user?'})
+        }
+
+        /* end the dialog */
+        return await stepContext.endDialog();
     }
 }
