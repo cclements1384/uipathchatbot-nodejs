@@ -4,6 +4,7 @@
 import { config } from 'dotenv';
 import * as path from 'path';
 import * as restify from 'restify';
+import { LuisRecognizer} from 'botbuilder-ai';
 
 // Import required bot services.
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.
@@ -61,6 +62,21 @@ const userState = new UserState(memoryStorage);
 const uipathUserProfileDialog = new UiPathUserProfileDialog(userState);
 const dialog = new UiPathUserProfileDialog(userState);
 //const uiPathDialog = new UiPathUserProfileDialog(userState);
+
+
+/* create the recognizer */
+ /* create the luis recognizer */
+ const dispatchRecognizer = new LuisRecognizer({
+    applicationId: process.env.LuisAppId,
+    endpointKey: process.env.LuisAPIKey,
+    endpoint: `https://${process.env.LuisApiHostName}.api.cognative.microsoft.com`
+    },{
+        includeAllIntents: true,
+        includeInstanceData: true
+    }, 
+    true
+);
+
 
 //const dialog = new MainDialog(userState,uiPathDialog);
 const bot = new DialogBot(conversationState, userState, dialog);

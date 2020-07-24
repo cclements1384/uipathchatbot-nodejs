@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "botbuilder": "~4.9.1",
+        "botbuilder-ai": "^4.9.3",
         "botbuilder-dialogs": "~4.9.1",
         "dotenv": "^8.2.0",
         "replace": "~1.1.1",
